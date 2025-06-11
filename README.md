@@ -1,3 +1,5 @@
-# Bruhat
+# Bruhat.jl
 
-[![Build Status](https://github.com/baileywhitbread/Bruhat.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/baileywhitbread/Bruhat.jl/actions/workflows/CI.yml?query=branch%3Amaster)
+Some tools to compute data related to reductive groups over finite fields. For instance:
+
+- Sizes of Bruhat cells intersected with unipotent conjugacy classes: $|B(\mathbb{F}_q) w B(\mathbb{F}_q) \cap G(\mathbb{F}_q)\cdot g|$.

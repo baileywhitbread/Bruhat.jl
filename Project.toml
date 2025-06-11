@@ -1,6 +1,6 @@
 name = "Bruhat"
 uuid = "2c031b90-0c76-4089-b0fc-d8363c532777"
-authors = ["Bailey Whitbread <baileycwhitbread@gmail.com> and contributors"]
+authors = ["Bailey Whitbread <b.whitbread@uq.edu.au>"]
 version = "1.0.0-DEV"
 
 [compat]
