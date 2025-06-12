@@ -32,13 +32,14 @@ function intersections(G::FiniteCoxeterGroup)
     # Labels for table
     rational_unipotent_classes_TeX_names = map(label -> name(TeX(rio();class=label[2]),ucl.classes[label[1]]),xt.classes)
     rational_unipotent_classes_names = fromTeX.(Ref(rio()),rational_unipotent_classes_TeX_names)
-    weyl_classes_TeX_names = charnames(uch;TeX=true)[principal_uch_indices,:]
+    # weyl_classes_TeX_names = charnames(uch;TeX=true)[principal_uch_indices,:]
+    weyl_classes_TeX_names = classnames(G;TeX=true)
     weyl_classes_names = fromTeX.(Ref(rio()),weyl_classes_TeX_names)
 
     # Formatting table
     repr_data = xrepr.(Ref(rio()),CycPol.(intersections))
     println("")
-    println("Rows labelled by φ∈Irr(W) <-> C∈ConjCl(W)")
+    println("Rows labelled by conj classes C∈ConjCl(W)")
     println("Columns labelled by unipotent classes C⊆G(Fq)")
     println("")
     showtable(repr_data;col_labels=rational_unipotent_classes_names,row_labels=weyl_classes_names,rows_label="|BwB∩C|")
