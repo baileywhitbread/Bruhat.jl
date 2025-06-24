@@ -5,7 +5,8 @@ using Reexport
 @reexport using Logging
 @reexport using Random
 
-export intersections
+export intersections_rational
+export intersections_geometric
 
 include("intersections.jl")
 
