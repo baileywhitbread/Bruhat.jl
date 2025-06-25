@@ -7,6 +7,7 @@ using Reexport
 
 export intersections_rational
 export intersections_geometric
+export intersections_geometric_ordered
 
 include("intersections.jl")
 
