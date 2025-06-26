@@ -180,13 +180,15 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     
     unipotent_classes_poset = ucl.orderclasses
     maximal_chain_list = maximal_chains(unipotent_classes_poset.C)
+    chain_count = 1
 
     for chain in maximal_chain_list
         Q = induced(unipotent_classes_poset,unipotent_classes_poset.elements[chain]) # Induced poset from the chain, but it displays poorly
         Q.show_element=(io,Q,n)->print(io,name(io,Q.elements[n])) # This fixes the display
         println()
-        print("The chain below is ")
+        print("Chain number ",chain_count," below is ")
         display(Q)
+        chain_count += 1
         println()
         showtable(repr_data[:,chain];col_labels=geometric_unipotent_classes_names[chain],row_labels=weyl_classes_names,rows_label="|BwB∩C|")
     end
