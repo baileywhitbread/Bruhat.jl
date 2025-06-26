@@ -186,7 +186,7 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
         Q = induced(unipotent_classes_poset,unipotent_classes_poset.elements[chain]) # Induced poset from the chain, but it displays poorly
         Q.show_element=(io,Q,n)->print(io,name(io,Q.elements[n])) # This fixes the display
         println()
-        print("Chain number ",chain_count," below is ")
+        print("Maximal chain number ",chain_count,"/",length(maximal_chain_list)," below is ")
         display(Q)
         chain_count += 1
         println()
