@@ -4,11 +4,17 @@ Some tools to compute data related to reductive groups over finite fields.
 
 For instance:
 
-- `intersections_rational(G)`: Returns sizes of Bruhat cells intersected with unipotent conjugacy classes. That is, the orders $|B(\mathbb{F}_q)w B(\mathbb{F}_q) \cap C_\lambda(\mathbb{F}_q)|$ where $w\in W$ has minimal length among its conjugacy class and $C_\lambda$ is a unipotent conjugacy class in $G$.
+- `intersections_rational(G)` 
 
-- `intersections_geometric(G)`: As above, but summing the columns according to which rational unipotent classes lie in the same geometric unipotent class. 
+Returns sizes of Bruhat cells intersected with unipotent conjugacy classes. That is, the orders $|B(\mathbb{F}_q) w B(\mathbb{F}_q) \cap C_\lambda(\mathbb{F}_q)|$ where $w\in W$ has minimal length among its conjugacy class and $C_\lambda$ is a unipotent conjugacy class in $G$.
 
-- `intersections_geometric_ordered(G)`: As above, but displays data according to the finite poset of unipotent classes ordered by the closure relation. This poset is not necessarily totally ordered, in which case multiple tables are displayed. One table is displayed for each maximal chain in the poset.  
+- `intersections_geometric(G)` 
+
+As above, but summing the columns according to which rational unipotent classes lie in the same geometric unipotent class. 
+
+- `intersections_geometric_ordered(G)`
+
+As above, but displays data according to the finite poset of unipotent classes ordered by the closure relation. This poset is not necessarily totally ordered, in which case multiple tables are displayed. One table is displayed for each maximal chain in the poset.  
 
 
 ## Getting started
@@ -453,8 +459,4 @@ Maximal chain number 6 (out of 6) is 1<A₁<Ã₁<A₁+Ã₁<Ã₂<Ã₂+A�
 │A₃+Ã₁  │                    q²⁶Φ₁⁴             q²⁸Φ₁⁴               q³⁰Φ₁⁴  (q²+q+2)q²⁹Φ₁⁵ q³⁴Φ₁⁴│
 │B₄     │                         0                  0                    0          q²⁴Φ₁⁴ q²⁶Φ₁⁴│
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────┘
-
-julia>
-
-
 ```
