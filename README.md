@@ -2,11 +2,11 @@
 
 Some tools to compute data related to reductive groups over finite fields. 
 
-For instance:
+Tools offered:
 
 - `intersections_rational(G)` 
 
-Returns sizes of Bruhat cells intersected with unipotent conjugacy classes. That is, the orders $|B(\mathbb{F}_q) w B(\mathbb{F}_q) \cap C_\lambda(\mathbb{F}_q)|$ where $w\in W$ has minimal length among its conjugacy class and $C_\lambda$ is a unipotent conjugacy class in $G$.
+Returns sizes of Bruhat cells intersected with unipotent conjugacy classes. That is, the orders $`|B(\mathbb{F}_q) w B(\mathbb{F}_q) \cap C_\lambda(\mathbb{F}_q)|`$ where $`w\in W`$ has minimal length among its conjugacy class and $`C_\lambda`$ is a unipotent conjugacy class in $`G`$.
 
 - `intersections_geometric(G)` 
 
