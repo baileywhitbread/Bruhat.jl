@@ -5,10 +5,11 @@ using Reexport
 @reexport using Logging
 @reexport using Random
 
+include("checks.jl")
+include("intersections.jl")
+
 export intersections_rational
 export intersections_geometric
 export intersections_geometric_ordered
-
-include("intersections.jl")
 
 end

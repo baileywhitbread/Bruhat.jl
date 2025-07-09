@@ -191,6 +191,16 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
         chain_count += 1
         println("")
         showtable(repr_data[:,chain];col_labels=geometric_unipotent_classes_names[chain],row_labels=weyl_classes_names,rows_label="|BwB∩C|")
+
+        # Check Lusztig's theorem
+        non_emptyness_matrix = map(f -> f != 0, intersection_numbers_scaled_summed[:,chain])
+        if check_lusztig(non_emptyness_matrix)
+            println("")
+            println("Lusztig's theorem is verified")
+        else
+            println("")
+            println("Lusztig's theorem is not verified ...")
+        end
     end
 end
 
