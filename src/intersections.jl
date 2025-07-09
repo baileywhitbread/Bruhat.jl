@@ -37,7 +37,6 @@ function intersections_rational(G::FiniteCoxeterGroup)
     println("")
     println("Rows labelled by conj classes C∈ConjCl(W)")
     println("Columns labelled by rational unipotent classes C⊆G(Fq)")
-    println("")
     showtable(repr_data;col_labels=rational_unipotent_classes_names,row_labels=weyl_classes_names,rows_label="|BwB∩C|")
 end
 
@@ -105,7 +104,6 @@ function intersections_geometric(G::FiniteCoxeterGroup)
     println("")
     println("Rows labelled by conj classes C∈ConjCl(W)")
     println("Columns labelled by geometric unipotent classes C⊆G(Fq)")
-    println("")
     showtable(repr_data;col_labels=geometric_unipotent_classes_names,row_labels=weyl_classes_names,rows_label="|BwB∩C|")
 end
 
@@ -170,7 +168,6 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     println("")
     println("Rows labelled by conj classes C∈ConjCl(W)")
     println("Columns labelled by geometric unipotent classes C⊆G(Fq)")
-    println("")
 
     ###
     ### This is where this function diverges from intersections_geometric
@@ -181,6 +178,7 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     unipotent_classes_poset = ucl.orderclasses
     maximal_chain_list = maximal_chains(unipotent_classes_poset.C)
     chain_count = 1
+    is_lusztig_true = true
 
     for chain in maximal_chain_list
         Q = induced(unipotent_classes_poset,unipotent_classes_poset.elements[chain]) # Induced poset from the chain, but it displays poorly
@@ -189,18 +187,26 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
         print("Maximal chain number ",chain_count," (out of ",length(maximal_chain_list),") is ")
         display(Q)
         chain_count += 1
-        println("")
-        showtable(repr_data[:,chain];col_labels=geometric_unipotent_classes_names[chain],row_labels=weyl_classes_names,rows_label="|BwB∩C|")
 
         # Check Lusztig's theorem
         non_emptyness_matrix = map(f -> f != 0, intersection_numbers_scaled_summed[:,chain])
         if check_lusztig(non_emptyness_matrix)
             println("")
-            println("Lusztig's theorem is verified")
+            println("Lusztig's theorem is verified on this chain")
         else
-            println("")
-            println("Lusztig's theorem is not verified ...")
+            is_lusztig_true = false
         end
+
+        println("")
+        showtable(repr_data[:,chain];col_labels=geometric_unipotent_classes_names[chain],row_labels=weyl_classes_names,rows_label="|BwB∩C|")
+    end
+
+    if is_lusztig_true
+        println("")
+        println("Overall, Lusztig's theorem is verified")
+    else
+        println("")
+        println("Code is wrong")
     end
 end
 
