@@ -1,6 +1,6 @@
 # Bruhat.jl
 
-Some tools to compute data related to reductive groups over finite fields. 
+Tools to compute data related to reductive groups over finite fields. 
 
 Tools offered:
 
