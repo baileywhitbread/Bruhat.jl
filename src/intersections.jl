@@ -3,7 +3,7 @@ function intersections_rational(G::FiniteCoxeterGroup)
     q=Mvp(:q)
     H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
-    W_ct = map(x->x(q=1),H_ct) # Weyl group character table array
+    W_ct = Int64.(value.(H_ct,:q=>1)) # Weyl group character table array
     ucl = UnipotentClasses(G) # Unipotent classes object
     #gt = GreenTable(ucl;classes=true) # Green functions object
     #gt_vals = Pol{Rational{Int64}}.(Pol.(gt.scalar)) # Green functions values array
@@ -46,7 +46,7 @@ function intersections_geometric(G::FiniteCoxeterGroup)
     # Gather required data
     H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
-    W_ct = map(x->x(q=1),H_ct) # Weyl group character table array
+    W_ct = Int64.(value.(H_ct,:q=>1)) # Weyl group character table array
     ucl = UnipotentClasses(G) # Unipotent classes object
     #gt = GreenTable(ucl;classes=true) # Green functions object
     #gt_vals = Pol{Rational{Int64}}.(Pol.(gt.scalar)) # Green functions values array
@@ -115,7 +115,7 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     # Gather required data
     H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
-    W_ct = map(x->x(q=1),H_ct) # Weyl group character table array
+    W_ct = Int64.(value.(H_ct,:q=>1)) # Weyl group character table array
     ucl = UnipotentClasses(G) # Unipotent classes object
     #gt = GreenTable(ucl;classes=true) # Green functions object
     #gt_vals = Pol{Rational{Int64}}.(Pol.(gt.scalar)) # Green functions values array
