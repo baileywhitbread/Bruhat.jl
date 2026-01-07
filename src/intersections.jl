@@ -1,6 +1,6 @@
 function intersections_rational(G::FiniteCoxeterGroup)
     # Gather required data
-    @Mvp q
+    q=Mvp(:q)
     H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
     W_ct = map(x->x(1),H_ct) # Weyl group character table array
@@ -42,7 +42,7 @@ function intersections_rational(G::FiniteCoxeterGroup)
 end
 
 function intersections_geometric(G::FiniteCoxeterGroup)
-    @Mvp q
+    q=Mvp(:q)
     # Gather required data
     H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
@@ -111,7 +111,7 @@ end
 
 
 function intersections_geometric_ordered(G::FiniteCoxeterGroup)
-    @Mvp q 
+    q=Mvp(:q)
     # Gather required data
     H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
@@ -217,7 +217,7 @@ end
 function higher_intersections_rational(G::FiniteCoxeterGroup,d::Int64)
     # Do |(BwB)^d cap C|
 
-    @Mvp q
+    q=Mvp(:q)
     # Gather required data
     H = hecke(G,q) # Hecke algebra object
     print("Not implemented")
