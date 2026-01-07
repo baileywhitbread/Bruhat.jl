@@ -1,6 +1,7 @@
 function intersections_rational(G::FiniteCoxeterGroup)
     # Gather required data
-    H = hecke(G,Pol(:q)) # Hecke algebra object
+    @Mvp q
+    H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
     W_ct = map(x->x(1),H_ct) # Weyl group character table array
     ucl = UnipotentClasses(G) # Unipotent classes object
@@ -9,7 +10,7 @@ function intersections_rational(G::FiniteCoxeterGroup)
     uch = UnipotentCharacters(G) # Unipotent characters object
     uval = UnipotentValues(ucl;classes=true) # Table of unipotent characters on unipotent classes
     uval_ct = Pol{Rational{Int64}}.(Pol.(uval.scalar)) # Aforementioned table as an array
-    borel_size = Pol(:q)^(length(roots(G))/2)*(Pol(:q)-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
+    borel_size = q^(length(roots(G))/2)*(q-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
 
     # Determine which unipotent characters are principal (happens iff fake degree > 0)
     # Fake degree := substitute q=1 in degree polynomial
@@ -41,8 +42,9 @@ function intersections_rational(G::FiniteCoxeterGroup)
 end
 
 function intersections_geometric(G::FiniteCoxeterGroup)
+    @Mvp q
     # Gather required data
-    H = hecke(G,Pol(:q)) # Hecke algebra object
+    H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
     W_ct = map(x->x(1),H_ct) # Weyl group character table array
     ucl = UnipotentClasses(G) # Unipotent classes object
@@ -51,7 +53,7 @@ function intersections_geometric(G::FiniteCoxeterGroup)
     uch = UnipotentCharacters(G) # Unipotent characters object
     uval = UnipotentValues(ucl;classes=true) # Table of unipotent characters on unipotent classes
     uval_ct = Pol{Rational{Int64}}.(Pol.(uval.scalar)) # Aforementioned table as an array
-    borel_size = Pol(:q)^(length(roots(G))/2)*(Pol(:q)-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
+    borel_size = q^(length(roots(G))/2)*(q-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
     xt = XTable(ucl;classes=true) # Contains information about rational unipotent classes and geometric unipotent classes
 
     # Determine which unipotent characters are principal (happens iff fake degree > 0)
@@ -109,8 +111,9 @@ end
 
 
 function intersections_geometric_ordered(G::FiniteCoxeterGroup)
+    @Mvp q 
     # Gather required data
-    H = hecke(G,Pol(:q)) # Hecke algebra object
+    H = hecke(G,q) # Hecke algebra object
     H_ct = CharTable(H).irr  # Hecke algebra character table array
     W_ct = map(x->x(1),H_ct) # Weyl group character table array
     ucl = UnipotentClasses(G) # Unipotent classes object
@@ -119,7 +122,7 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     uch = UnipotentCharacters(G) # Unipotent characters object
     uval = UnipotentValues(ucl;classes=true) # Table of unipotent characters on unipotent classes
     uval_ct = Pol{Rational{Int64}}.(Pol.(uval.scalar)) # Aforementioned table as an array
-    borel_size = Pol(:q)^(length(roots(G))/2)*(Pol(:q)-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
+    borel_size = q^(length(roots(G))/2)*(q-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
     xt = XTable(ucl;classes=true) # Contains information about rational unipotent classes and geometric unipotent classes
 
     # Determine which unipotent characters are principal (happens iff fake degree > 0)
@@ -214,8 +217,9 @@ end
 function higher_intersections_rational(G::FiniteCoxeterGroup,d::Int64)
     # Do |(BwB)^d cap C|
 
+    @Mvp q
     # Gather required data
-    H = hecke(G,Pol(:q)) # Hecke algebra object
+    H = hecke(G,q) # Hecke algebra object
     print("Not implemented")
 
 end
