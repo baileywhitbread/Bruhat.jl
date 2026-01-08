@@ -27,7 +27,7 @@ function intersections_rational(G::FiniteCoxeterGroup)
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
     A = borel_size .* intersection_numbers_unscaled
-    cent_mvp = map(p -> p(q_mvp), centraliser_sizes)
+    cent_mvp = map(p -> p(q), centraliser_sizes)
     recip = [one(p)//p for p in cent_mvp]
     intersection_numbers_scaled = A .* reshape(recip, 1, :)
 
@@ -74,7 +74,7 @@ function intersections_geometric(G::FiniteCoxeterGroup)
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
     A = borel_size .* intersection_numbers_unscaled
-    cent_mvp = map(p -> p(q_mvp), centraliser_sizes)
+    cent_mvp = map(p -> p(q), centraliser_sizes)
     recip = [one(p)//p for p in cent_mvp]
     intersection_numbers_scaled_unsummed = A .* reshape(recip, 1, :)
 
@@ -147,10 +147,10 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
     A = borel_size .* intersection_numbers_unscaled
-    cent_mvp = map(p -> p(q_mvp), centraliser_sizes)
+    cent_mvp = map(p -> p(q), centraliser_sizes)
     recip = [one(p)//p for p in cent_mvp]
     intersection_numbers_scaled_unsummed = A .* reshape(recip, 1, :)
-    
+
     # Sum columns corresponding to the same geometric unipotent class
     # Determine which rational classes correspond to the same geometric class
     rational_geometric_indices = xt.classes # A list of pairs [n,m] with n counting geometric orbits and m counting rational orbits inside the geometric one  
