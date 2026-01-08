@@ -18,16 +18,18 @@ function intersections_rational(G::FiniteCoxeterGroup)
     # Fake degree := substitute q=1 in degree polynomial
     fake_degs = map(p->p(1),degrees(uch))[:,1]
     principal_uch_indices = findall(d->d>0,fake_degs)
-    uval_ct = uval_ct[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
+    uval_ct_mvp = uval_ct_mvp[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
 
     # Compute intersection numbers |BwB∩C| following Example 3.9 in [Geck 2011, Some applications of CHEVIE]
-    intersection_numbers_unscaled = transpose(H_ct) * uval_ct_mvp
+    intersection_numbers_unscaled = transpose(H_ct) * uval_ct_mvp 
 
     # Rescale each entry by size of Borel and centraliser sizes
-    xt = XTable(ucl;classes=true) # Contains centraliser sizes of unipotent classes
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
-    intersection_numbers_scaled = Pol{Rational{Int64}}.((borel_size .* intersection_numbers_unscaled) * Diagonal(map(p->1//p,centraliser_sizes)))
+    A = borel_size .* intersection_numbers_unscaled
+    cent_mvp = map(p -> p(q_mvp), centraliser_sizes)
+    recip = [one(p)//p for p in cent_mvp]
+    intersection_numbers_scaled = A .* reshape(recip, 1, :)
 
     # Labels for table
     rational_unipotent_classes_TeX_names = map(label -> name(TeX(rio();class=label[2]),ucl.classes[label[1]]),xt.classes)
@@ -63,7 +65,7 @@ function intersections_geometric(G::FiniteCoxeterGroup)
     # Fake degree := substitute q=1 in degree polynomial
     fake_degs = map(p->p(1),degrees(uch))[:,1]
     principal_uch_indices = findall(d->d>0,fake_degs)
-    uval_ct = uval_ct[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
+    uval_ct_mvp = uval_ct_mvp[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
 
     # Compute intersection numbers |BwB∩C| following Example 3.9 in [Geck 2011, Some applications of CHEVIE]
     intersection_numbers_unscaled = transpose(H_ct) * uval_ct_mvp 
@@ -71,7 +73,10 @@ function intersections_geometric(G::FiniteCoxeterGroup)
     # Rescale each entry by size of Borel and centraliser sizes
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
-    intersection_numbers_scaled_unsummed = Pol{Rational{Int64}}.((borel_size .* intersection_numbers_unscaled) * Diagonal(map(p->1//p,centraliser_sizes)))
+    A = borel_size .* intersection_numbers_unscaled
+    cent_mvp = map(p -> p(q_mvp), centraliser_sizes)
+    recip = [one(p)//p for p in cent_mvp]
+    intersection_numbers_scaled_unsummed = A .* reshape(recip, 1, :)
 
     ###
     ### This is where this function diverges from the intersections_rational function
@@ -133,15 +138,18 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     # Fake degree := substitute q=1 in degree polynomial
     fake_degs = map(p->p(1),degrees(uch))[:,1]
     principal_uch_indices = findall(d->d>0,fake_degs)
-    uval_ct = uval_ct[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
+    uval_ct_mvp = uval_ct_mvp[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
 
     # Compute intersection numbers |BwB∩C| following Example 3.9 in [Geck 2011, Some applications of CHEVIE]
-    intersection_numbers_unscaled = transpose(H_ct) * uval_ct_mvp
+    intersection_numbers_unscaled = transpose(H_ct) * uval_ct_mvp 
 
     # Rescale each entry by size of Borel and centraliser sizes
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
-    intersection_numbers_scaled_unsummed = Pol{Rational{Int64}}.((borel_size .* intersection_numbers_unscaled) * Diagonal(map(p->1//p,centraliser_sizes)))
+    A = borel_size .* intersection_numbers_unscaled
+    cent_mvp = map(p -> p(q_mvp), centraliser_sizes)
+    recip = [one(p)//p for p in cent_mvp]
+    intersection_numbers_scaled_unsummed = A .* reshape(recip, 1, :)
     
     # Sum columns corresponding to the same geometric unipotent class
     # Determine which rational classes correspond to the same geometric class
