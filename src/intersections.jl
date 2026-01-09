@@ -27,7 +27,7 @@ function intersections_rational(G::FiniteCoxeterGroup)
     rational_classes_centraliser_sizes = xt.centClass
     centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
     A = borel_size .* intersection_numbers_unscaled
-    cent_mvp = map(p -> p(q), centraliser_sizes)
+    cent_mvp = map(p -> p(q), centraliser_sizes) # q is an mvp so f = f(q) makes f an mvp
     recip = [one(p)//p for p in cent_mvp]
     intersection_numbers_scaled = A .* reshape(recip, 1, :)
 

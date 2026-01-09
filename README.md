@@ -6,9 +6,7 @@ Tools offered:
 
 - `intersections_rational(G)` 
 
-Returns sizes of Bruhat cells intersected with rational unipotent conjugacy classes. 
-
-That is, returns the orders $`|B(\mathbb{F}_q) w B(\mathbb{F}_q) \cap C_g|`$ where $`w\in W`$ has minimal length among its conjugacy class and $`C_g`$ is the $`G(\mathbb{F}_q)`$-conjugacy class of a unipotent element $`g\in G(\mathbb{F}_q)`$. This calculation follows [[Geck 2011](https://www.jstor.org/stable/43997674), Section 3].
+Returns the orders of Bruhat cells intersected with rational unipotent conjugacy classes. That is, returns the orders of $`B(\mathbb{F}_q) w B(\mathbb{F}_q) \cap C_g`$ where $`[w]\subseteq W`$ is a conjugacy class (with representative of minimal length among its conjugacy class) and $`C_g`$ is the $`G(\mathbb{F}_q)`$-conjugacy class of a unipotent element $`g\in G(\mathbb{F}_q)`$. This calculation follows [[Geck 2011](https://www.jstor.org/stable/43997674), Section 3].
 
 - `intersections_geometric(G)` 
 
@@ -16,7 +14,13 @@ As above, but summing the columns according to which unipotent elements $`g\in G
 
 - `intersections_geometric_ordered(G)`
 
-As above, but displays data according to the finite poset of unipotent classes ordered by the closure relation. In general, this poset is not totally ordered, in which case one table is displayed for each maximal chain in the poset. The resulting tables are used to verify [[Lusztig 2011](https://arxiv.org/abs/1003.0412v5), Theorem 0.4. (i)].
+As above, but displays data according to the finite poset of unipotent classes ordered by the closure relation. In general, this poset is not totally ordered, in which case one table is displayed for each maximal chain in the poset. The resulting tables are used to verify [[Lusztig 2011](https://arxiv.org/abs/1003.0412v5), Theorem 0.4. (i)]. This function is slow for groups with complicated posets.
+
+- `verify_lusztig(G)`
+
+Verifies Lusztig's theorem without calculating maximal chains. This allows one to quickly verify Lusztig's theorem for groups like $`E_8`$. 
+
+
 
 
 ## Getting started
