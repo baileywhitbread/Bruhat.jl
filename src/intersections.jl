@@ -291,9 +291,9 @@ function verify_lusztig(G::FiniteCoxeterGroup)
 
     # Formatting table
     repr_data = xrepr.(Ref(rio()),CycPol.(intersection_numbers_scaled_summed))
-    println("")
-    println("Rows labelled by conj classes C∈ConjCl(W)")
-    println("Columns labelled by geometric unipotent classes C⊆G(Fq)")
+    #println("")
+    #println("Rows labelled by conj classes C∈ConjCl(W)")
+    #println("Columns labelled by geometric unipotent classes C⊆G(Fq)")
 
     ###
     ### This is where this function diverges from intersections_geometric
@@ -323,7 +323,6 @@ function verify_lusztig(G::FiniteCoxeterGroup)
             if repr_data[weyl_cc,geo_uc] != "0"
                 interval_above = interval(ucl_PC,≥,geo_uc)
                 for class in interval_above
-                    println(repr_data[weyl_cc,class])
                     if repr_data[weyl_cc,class] == "0"
                         is_lusztig_true = false
                     end
