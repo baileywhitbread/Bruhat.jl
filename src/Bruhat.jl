@@ -11,5 +11,6 @@ include("intersections.jl")
 export intersections_rational
 export intersections_geometric
 export intersections_geometric_ordered
+export verify_lusztig
 
 end

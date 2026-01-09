@@ -188,10 +188,14 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
     ### This is where this function diverges from intersections_geometric
     ###
     
-    # Show a table for each maximal chain in the poset of unipotent classes
+    # Compute poset of unipotent classes
     
     unipotent_classes_poset = ucl.orderclasses
-    maximal_chain_list = maximal_chains(unipotent_classes_poset.C)
+    unipotent_classes_cposet = unipotent_classes_poset.C
+
+    # Show a table for each maximal chain in the poset of unipotent classes
+
+    maximal_chain_list = maximal_chains(unipotent_classes_cposet)
     chain_count = 1
     is_lusztig_true = true
 
@@ -205,7 +209,7 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
 
         # Check Lusztig's theorem
         non_emptyness_matrix = map(f -> f != 0, intersection_numbers_scaled_summed[:,chain])
-        if check_lusztig(non_emptyness_matrix)
+        if verify_lusztig_on_chain(non_emptyness_matrix)
             println("")
             println("Lusztig's theorem is verified on this chain")
         else
@@ -223,6 +227,119 @@ function intersections_geometric_ordered(G::FiniteCoxeterGroup)
         println("")
         println("Code is wrong")
     end
+end
+
+function verify_lusztig(G::FiniteCoxeterGroup)
+    q = Mvp(:q)
+    # Gather required data
+    H = hecke(G,q) # Hecke algebra object
+    H_ct = CharTable(H).irr  # Hecke algebra character table array
+    W_ct = Int64.(value.(H_ct,:q=>1)) # Weyl group character table array
+    ucl = UnipotentClasses(G) # Unipotent classes object
+    #gt = GreenTable(ucl;classes=true) # Green functions object
+    #gt_vals = Pol{Rational{Int64}}.(Pol.(gt.scalar)) # Green functions values array
+    uch = UnipotentCharacters(G) # Unipotent characters object
+    uval = UnipotentValues(ucl;classes=true) # Table of unipotent characters on unipotent classes
+    uval_ct = Pol{Rational{Int64}}.(Pol.(uval.scalar)) # Aforementioned table as an array
+    uval_ct_mvp = map(p -> p(q), uval_ct)
+    borel_size = q^(length(roots(G))//2)*(q-1)^rank(G) # |B(Fq)| = |U(Fq)| |T(Fq)| = q^|{positive roots}| (q-1)^rank(G)
+    xt = XTable(ucl;classes=true) # Contains information about rational unipotent classes and geometric unipotent classes
+
+    # Determine which unipotent characters are principal (happens iff fake degree > 0)
+    # Fake degree := substitute q=1 in degree polynomial
+    fake_degs = map(p->p(1),degrees(uch))[:,1]
+    principal_uch_indices = findall(d->d>0,fake_degs)
+    uval_ct_mvp = uval_ct_mvp[principal_uch_indices,begin:end] # Removing char table rows of non-principal characters
+
+    # Compute intersection numbers |BwB∩C| following Example 3.9 in [Geck 2011, Some applications of CHEVIE]
+    intersection_numbers_unscaled = transpose(H_ct) * uval_ct_mvp 
+
+    # Rescale each entry by size of Borel and centraliser sizes
+    rational_classes_centraliser_sizes = xt.centClass
+    centraliser_sizes = Pol{Rational{Int64}}.(Pol.(rational_classes_centraliser_sizes))
+    A = borel_size .* intersection_numbers_unscaled
+    cent_mvp = map(p -> p(q), centraliser_sizes)
+    recip = [one(p)//p for p in cent_mvp]
+    intersection_numbers_scaled_unsummed = A .* reshape(recip, 1, :)
+
+    # Sum columns corresponding to the same geometric unipotent class
+    # Determine which rational classes correspond to the same geometric class
+    rational_geometric_indices = xt.classes # A list of pairs [n,m] with n counting geometric orbits and m counting rational orbits inside the geometric one  
+    class_ids = map(x->x[1],rational_geometric_indices) # Cuts off m
+    duplicated = filter(u -> count(==(u), class_ids) > 1, unique(class_ids)) # Find all labels that occur more than once
+    groups = reverse([ findall(==(u), class_ids) for u in duplicated ]) # Groups of columns which need to be summed
+    
+    for group in groups
+        summed_col = sum(intersection_numbers_scaled_unsummed[:, group], dims=2)
+        cols_before_summed_col = intersection_numbers_scaled_unsummed[:, 1:group[1]-1]
+        cols_after_summed_col = intersection_numbers_scaled_unsummed[:,group[end]+1:end]
+        intersection_numbers_scaled_unsummed = hcat(cols_before_summed_col, summed_col, cols_after_summed_col)
+    end
+
+    intersection_numbers_scaled_summed = intersection_numbers_scaled_unsummed # Readability
+
+    # Labels for table
+    rational_unipotent_classes_TeX_names = map(label -> name(TeX(rio();class=label[2]),ucl.classes[label[1]]),xt.classes)
+    rational_unipotent_classes_names = fromTeX.(Ref(rio()),rational_unipotent_classes_TeX_names)
+    weyl_classes_TeX_names = classnames(G;TeX=true)
+    weyl_classes_names = fromTeX.(Ref(rio()),weyl_classes_TeX_names)
+
+    # Remove rational orbit labels
+    rational_label_indices = [ x for g in groups for x in g[2:end] ] # Find labels which need to be removed
+    keep = setdiff(1:length(rational_unipotent_classes_names), rational_label_indices)
+    geometric_unipotent_classes_names = rational_unipotent_classes_names[keep] 
+
+    # Formatting table
+    repr_data = xrepr.(Ref(rio()),CycPol.(intersection_numbers_scaled_summed))
+    println("")
+    println("Rows labelled by conj classes C∈ConjCl(W)")
+    println("Columns labelled by geometric unipotent classes C⊆G(Fq)")
+
+    ###
+    ### This is where this function diverges from intersections_geometric
+    ###
+    
+    # Compute poset of unipotent classes
+    
+    ucl_P = ucl.orderclasses
+    ucl_PC = ucl_P.C
+
+    ###
+    ### This is where this function diverges from intersections_geometric_ordered
+    ###
+
+    # The strategy is to check Lusztig's theorem on the intervals [O,top] as O ranges over unipotent classes
+    # The previous function ranges over all maximal chains in the poset (too long in E7 and E8)
+
+    unipotent_classes = ucl.classes
+
+    weyl_cc_num = length(weyl_classes_names)
+    geo_uc_num = length(geometric_unipotent_classes_names)
+
+    is_lusztig_true = true
+
+    for weyl_cc in 1:weyl_cc_num
+        for geo_uc in 1:geo_uc_num
+            if repr_data[weyl_cc,geo_uc] != "0"
+                interval_above = interval(ucl_PC,≥,geo_uc)
+                for class in interval_above
+                    println(repr_data[weyl_cc,class])
+                    if repr_data[weyl_cc,class] == "0"
+                        is_lusztig_true = false
+                    end
+                end
+            end
+        end
+    end
+
+    if is_lusztig_true
+        println("")
+        println("Overall, Lusztig's theorem is verified")
+    else
+        println("")
+        println("Code is wrong")
+    end
+    
 end
 
 
