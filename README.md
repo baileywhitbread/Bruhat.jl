@@ -1,6 +1,6 @@
 # Bruhat.jl
 
-Tools to compute data related to reductive groups over finite fields. 
+Tools to compute data related to reductive groups over finite fields. We heavily rely on Jean Michel's port of the computer algebra system [Chevie](https://github.com/jmichel7/Chevie.jl). 
 
 Tools offered:
 
