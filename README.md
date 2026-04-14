@@ -2,6 +2,10 @@
 
 Tools to compute data related to reductive groups over finite fields. We heavily rely on Jean Michel's port of the computer algebra system [Chevie](https://github.com/jmichel7/Chevie.jl). 
 
+Created in the early stages of our project resulting in the paper [arXiv:2603.20499](https://arxiv.org/abs/2603.20499). 
+
+This code was superseded by the code in [this repo](https://github.com/baileywhitbread/BraidStacks.jl). 
+
 Tools offered:
 
 - `intersections_rational(G)` 
